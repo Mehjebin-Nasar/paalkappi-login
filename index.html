@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pall Kappi — TinkerHub MESCET</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;0,900;1,600&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FFF6DE;
+    --mustard:#F4B400;
+    --mustard-deep:#E5A400;
+    --coffee:#3C2415;
+    --coffee-light:#6B4226;
+    --coral:#F2542D;
+    --teal:#1C8C7A;
+    --ink:#241505;
+    --line:3px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--mustard);
+    background-image:
+      radial-gradient(circle at 8% 90%, rgba(255,246,222,0.35) 0, rgba(255,246,222,0.35) 6px, transparent 7px),
+      radial-gradient(circle at 20% 95%, rgba(255,246,222,0.3) 0, rgba(255,246,222,0.3) 5px, transparent 6px),
+      radial-gradient(circle at 92% 12%, rgba(60,36,21,0.06) 0, rgba(60,36,21,0.06) 4px, transparent 5px);
+    background-size: 140px 140px, 100px 100px, 60px 60px;
+    font-family:'Space Grotesk', sans-serif;
+    color:var(--ink);
+    min-height:100vh;
+    padding: 28px 16px 60px;
+  }
+
+  .wrap{ max-width: 620px; margin: 0 auto; }
+
+  .badge-row{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--coffee);
+    margin-bottom: 10px;
+  }
+  .badge-row span{
+    background:var(--cream);
+    border:2px solid var(--ink);
+    padding:5px 10px;
+    border-radius:20px;
+  }
+
+  header.hero{
+    background:var(--cream);
+    border:var(--line) solid var(--ink);
+    border-radius: 22px;
+    padding: 30px 26px 26px;
+    box-shadow: 8px 8px 0 var(--ink);
+    position:relative;
+    overflow:hidden;
+    margin-bottom: 26px;
+  }
+  header.hero::after{
+    content:"☕";
+    position:absolute; right:-10px; top:-18px;
+    font-size:110px; opacity:0.12; transform:rotate(12deg);
+  }
+  .kicker{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--coral); font-weight:700;
+    display:inline-block; margin-bottom:10px;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:900;
+    font-size: clamp(40px, 10vw, 60px);
+    line-height:0.95;
+    margin:0 0 6px;
+    color:var(--coffee);
+  }
+  .sub{
+    font-size:15px; line-height:1.5; max-width: 46ch; color:var(--coffee-light);
+    margin: 10px 0 16px;
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:10px;
+    font-family:'JetBrains Mono', monospace; font-size:12.5px; font-weight:700;
+  }
+  .meta div{
+    background:var(--teal); color:var(--cream);
+    border:2px solid var(--ink); border-radius:8px;
+    padding:6px 10px;
+  }
+  .meta div.alt{ background:var(--coral); }
+
+  form{
+    background:var(--cream);
+    border: var(--line) solid var(--ink);
+    border-radius:22px;
+    padding: 26px;
+    box-shadow: 8px 8px 0 var(--ink);
+  }
+  .field{ margin-bottom:20px; }
+  label{
+    display:block;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; text-transform:uppercase; letter-spacing:0.06em;
+    font-weight:700; color:var(--coffee);
+    margin-bottom:6px;
+  }
+  label .req{ color:var(--coral); }
+  input, select{
+    width:100%;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:16px;
+    padding:12px 14px;
+    border:2.5px solid var(--ink);
+    border-radius:10px;
+    background:#fff;
+    color:var(--ink);
+    outline:none;
+    transition: transform 0.1s ease, box-shadow 0.15s ease;
+  }
+  input:focus, select:focus{
+    box-shadow: 4px 4px 0 var(--teal);
+    transform: translate(-2px,-2px);
+  }
+  .hint{ font-size:12px; color:var(--coffee-light); margin-top:5px; }
+
+  button.submit{
+    width:100%;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700; font-size:17px;
+    color:var(--cream);
+    background:var(--coffee);
+    border:2.5px solid var(--ink);
+    border-radius:14px;
+    padding:16px;
+    cursor:pointer;
+    box-shadow: 6px 6px 0 var(--coral);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    margin-top: 4px;
+  }
+  button.submit:hover{ transform: translate(-2px,-2px); box-shadow: 8px 8px 0 var(--coral); }
+  button.submit:active{ transform: translate(1px,1px); box-shadow: 3px 3px 0 var(--coral); }
+  button.submit:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
+
+  .status{
+    margin-top:14px; font-family:'JetBrains Mono', monospace; font-size:13px;
+    padding:12px 14px; border-radius:10px; border:2px solid var(--ink); display:none;
+  }
+  .status.show{ display:block; }
+  .status.ok{ background:#DCEFE9; color:var(--teal); }
+  .status.err{ background:#FBE1DA; color:var(--coral); }
+
+  footer{
+    text-align:center; margin-top:24px;
+    font-family:'JetBrains Mono', monospace; font-size:11px;
+    color:var(--coffee); opacity:0.7;
+  }
+
+  @media (max-width:420px){
+    header.hero{padding:24px 18px;}
+    form{padding:20px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="badge-row">
+    <span>TinkerHub × MESCET</span>
+    <span>Orientation</span>
+  </div>
+
+  <header class="hero">
+    <span class="kicker">You're invited for a</span>
+    <h1>pall kappi</h1>
+    <p class="sub">An informal cup of coffee to kick things off — meet the core team, hear what TinkerHub MESCET is about, and see where you fit in.</p>
+    <div class="meta">
+      <div>📅 JUL 31 2026</div>
+      <div class="alt">📍 SEMINAR HALL</div>
+    </div>
+  </header>
+
+  <form id="pallkappiForm">
+    <div class="field">
+      <label for="name">Full name <span class="req">*</span></label>
+      <input type="text" id="name" name="name" required placeholder="e.g. Anjali Menon" autocomplete="name">
+    </div>
+
+    <div class="field">
+      <label for="regno">Register number <span class="req">*</span></label>
+      <input type="text" id="regno" name="regno" required placeholder="e.g. MES23CS045">
+    </div>
+
+    <div class="field">
+      <label for="department">Department <span class="req">*</span></label>
+      <select id="department" name="department" required>
+        <option value="" disabled selected>Select department</option>
+        <option>Computer Science</option>
+        <option>AI & Data Science</option>
+        <option>Electronics & Communication</option>
+        <option>Electrical & Electronics</option>
+        <option>Mechanical Engineering</option>
+        <option>Civil Engineering</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="semester">Semester <span class="req">*</span></label>
+      <select id="semester" name="semester" required>
+        <option value="" disabled selected>Select semester</option>
+        <option>1</option><option>2</option><option>3</option><option>4</option>
+        <option>5</option><option>6</option><option>7</option><option>8</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="phone">Phone number <span class="req">*</span></label>
+      <input type="tel" id="phone" name="phone" required placeholder="10-digit mobile number" pattern="[0-9]{10}" autocomplete="tel">
+    </div>
+
+    <div class="field">
+      <label for="email">Email <span class="req">*</span></label>
+      <input type="email" id="email" name="email" required placeholder="you@example.com" autocomplete="email">
+    </div>
+
+    <button type="submit" class="submit" id="submitBtn">Reserve my seat →</button>
+    <div class="status" id="statusBox"></div>
+  </form>
+
+  <footer>TinkerHub MESCET · Kunnukara, Kerala</footer>
+</div>
+
+<script>
+  const form = document.getElementById('pallkappiForm');
+  const btn = document.getElementById('submitBtn');
+  const statusBox = document.getElementById('statusBox');
+
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    statusBox.className = 'status';
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    const payload = {
+      name: form.name.value.trim(),
+      regno: form.regno.value.trim(),
+      department: form.department.value,
+      semester: form.semester.value,
+      phone: form.phone.value.trim(),
+      email: form.email.value.trim(),
+      event: 'pall-kappi-2026-07-31'
+    };
+
+    try{
+      const res = await fetch('/api/submit-pallkappi', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      if(!res.ok) throw new Error('Server responded with an error');
+
+      statusBox.textContent = "You're in! See you at the seminar hall on July 31 ☕";
+      statusBox.classList.add('show','ok');
+      form.reset();
+      document.querySelectorAll('#sourceChips .radio-chip').forEach(c=>c.classList.remove('checked'));
+      btn.textContent = 'Reserve my seat →';
+    }catch(err){
+      statusBox.textContent = "Couldn't submit — check your connection and try again.";
+      statusBox.classList.add('show','err');
+      btn.textContent = 'Reserve my seat →';
+    }finally{
+      btn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>
